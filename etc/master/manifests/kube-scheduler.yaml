@@ -11,10 +11,10 @@ spec:
   containers:
   - command:
     - kube-scheduler
-    - --authentication-kubeconfig=/etc/kubernetes/scheduler.conf
-    - --authorization-kubeconfig=/etc/kubernetes/scheduler.conf
+    - --authentication-kubeconfig=/etc/kubernetes/kube-scheduler.conf
+    - --authorization-kubeconfig=/etc/kubernetes/kube-scheduler.conf
     - --bind-address=127.0.0.1
-    - --kubeconfig=/etc/kubernetes/scheduler.conf
+    - --kubeconfig=/etc/kubernetes/kube-scheduler.conf
     - --leader-elect=true
     - --port=0
     image: k8s.gcr.io/kube-scheduler:v1.18.6
@@ -33,14 +33,14 @@ spec:
       requests:
         cpu: 100m
     volumeMounts:
-    - mountPath: /etc/kubernetes/scheduler.conf
+    - mountPath: /etc/kubernetes/kube-scheduler.conf
       name: kubeconfig
       readOnly: true
   hostNetwork: true
   priorityClassName: system-cluster-critical
   volumes:
   - hostPath:
-      path: /etc/kubernetes/scheduler.conf
+      path: /etc/kubernetes/kube-scheduler.conf
       type: FileOrCreate
     name: kubeconfig
 status: {}
