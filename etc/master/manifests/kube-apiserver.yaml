@@ -21,34 +21,34 @@ spec:
     - --audit-log-path=/var/log/audit.log
     - --authorization-mode=Node,RBAC
     - --advertise-address=%NODE_IP%
-    - --client-ca-file=/etc/kubernetes/certs/ca.pem
+    - --client-ca-file=/etc/kubernetes/pki/ca.pem
     - --enable-admission-plugins=NamespaceLifecycle,NodeRestriction,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota
     - --enable-bootstrap-token-auth=true
-    - --etcd-cafile=/etc/kubernetes/certs/ca.pem
-    - --etcd-certfile=/etc/kubernetes/certs/kubernetes.pem
-    - --etcd-keyfile=/etc/kubernetes/certs/kubernetes-key.pem
+    - --etcd-cafile=/etc/kubernetes/pki/etcd/ca.pem
+    - --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.pem
+    - --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client-key.pem
     - --etcd-servers=https://127.0.0.1:2379
     - --event-ttl=1h
     - --insecure-port=0
     - --encryption-provider-config=/etc/kubernetes/encryption-config.yaml
-    - --kubelet-certificate-authority=/etc/kubernetes/certs/ca.pem
-    - --kubelet-client-certificate=/etc/kubernetes/certs/kubernetes.pem
-    - --kubelet-client-key=/etc/kubernetes/certs/kubernetes-key.pem
+    # - --kubelet-certificate-authority=/etc/kubernetes/certs/ca.pem
+    - --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.pem
+    - --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client-key.pem
     - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
     - --kubelet-https=true
-    # - --proxy-client-cert-file=/etc/kubernetes/certs/front-proxy-client.crt
-    # - --proxy-client-key-file=/etc/kubernetes/certs/front-proxy-client.key
+    # - --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt
+    # - --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key
     # - --requestheader-allowed-names=front-proxy-client
-    # - --requestheader-client-ca-file=/etc/kubernetes/certs/front-proxy-ca.crt
+    # - --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt
     # - --requestheader-extra-headers-prefix=X-Remote-Extra-
     # - --requestheader-group-headers=X-Remote-Group
     # - --requestheader-username-headers=X-Remote-User
     - --secure-port=6443
-    - --service-account-key-file=/etc/kubernetes/certs/service-account.pem
+    - --service-account-key-file=/etc/kubernetes/pki/service-account.pem
     - --service-cluster-ip-range=10.96.0.0/12
     - --service-node-port-range=30000-32767
-    - --tls-cert-file=/etc/kubernetes/certs/kubernetes.pem
-    - --tls-private-key-file=/etc/kubernetes/certs/kubernetes-key.pem
+    - --tls-cert-file=/etc/kubernetes/pki/kube-apiserver.pem
+    - --tls-private-key-file=/etc/kubernetes/pki/kube-apiserver-key.pem
     - --v=2
     image: k8s.gcr.io/kube-apiserver:v1.18.6
     imagePullPolicy: IfNotPresent
@@ -75,6 +75,9 @@ spec:
     - mountPath: /etc/kubernetes/pki
       name: k8s-certs
       readOnly: true
+    - mountPath: /etc/kubernetes/encryption-config.yaml
+      name: encryption-config
+      readOnly: true
   hostNetwork: true
   priorityClassName: system-cluster-critical
   volumes:
@@ -90,4 +93,8 @@ spec:
       path: /etc/kubernetes/pki
       type: DirectoryOrCreate
     name: k8s-certs
+  - hostPath:
+      path: /etc/kubernetes/encryption-config.yaml
+      type: FileOrCreate
+    name: encryption-config
 status: {}

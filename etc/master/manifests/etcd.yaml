@@ -14,12 +14,12 @@ spec:
   - command:
     - etcd
     - --name etcd-0
-    - --cert-file=/etc/kubernetes/certs/kubernetes.pem
-    - --key-file=/etc/kubernetes/certs/kubernetes-key.pem
-    - --peer-cert-file=/etc/kubernetes/certs/kubernetes.pem
-    - --peer-key-file=/etc/kubernetes/certs/kubernetes-key.pem
-    - --trusted-ca-file=/etc/kubernetes/certs/ca.pem
-    - --peer-trusted-ca-file=/etc/kubernetes/certs/ca.pem
+    - --cert-file=/etc/kubernetes/pki/etcd/server.pem
+    - --key-file=/etc/kubernetes/pki/etcd/server-key.pem
+    - --peer-cert-file=/etc/kubernetes/pki/etcd/peer.pem
+    - --peer-key-file=/etc/kubernetes/pki/etcd/peer-key.pem
+    - --trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem
+    - --peer-trusted-ca-file=/etc/kubernetes/pki/etcd/ca.pem
     - --peer-client-cert-auth=true
     - --client-cert-auth=true
     - --initial-advertise-peer-urls=https://%NODE_IP%:2380

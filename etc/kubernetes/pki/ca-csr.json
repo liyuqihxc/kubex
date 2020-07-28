@@ -1,0 +1,16 @@
+{
+  "CN": "Kubex Cluster Root Authority",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "Los Angeles",
+      "O": "Dirty Work Inc.",
+      "OU": "kubex",
+      "ST": "California"
+    }
+  ]
+}
